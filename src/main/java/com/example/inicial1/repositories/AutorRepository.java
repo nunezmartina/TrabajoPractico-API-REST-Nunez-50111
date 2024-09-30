@@ -1,8 +1,9 @@
 package com.example.inicial1.repositories;
-import com.example.inicial1.entities.Domicilio;
+
+import com.example.inicial1.entities.Autor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DomicilioRepository  extends JpaRepository <Domicilio, Long> {
+public interface AutorRepository extends BaseRepository<Autor, Long> {
 }

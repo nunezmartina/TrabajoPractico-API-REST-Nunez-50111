@@ -4,22 +4,24 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.envers.Audited;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Table(name="autor")
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor //constructor vacio
 @Setter
 @Getter
-@ToString
 @Builder
 @Audited
-public class Domicilio extends Base {
+public class Autor extends Base {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String calle;
-    private int numero;
+    private String nombre;
+    private String apellido;
+    private String biografia;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "fk_localidad")
-    private Localidad localidad;
 }

@@ -2,10 +2,8 @@ package com.example.inicial1.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import org.hibernate.envers.Audited;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +15,8 @@ import java.util.List;
 @Getter
 @Builder
 @Audited
-public class Persona implements Serializable {
+public class Persona extends Base{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,10 +24,14 @@ public class Persona implements Serializable {
     private String apellido;
     private int dni;
 
-
-    @OneToOne(cascade =CascadeType.PERSIST)
-    @JoinColumn(name="fk_domicilio")
+    @OneToOne(cascade =CascadeType.ALL)
+    @JoinColumn(name="fk_domicilio") //foreing key de domicilio
     private Domicilio domicilio;
 
-
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(name = "PersonaLibro",
+            joinColumns = @JoinColumn(name = "persona_id"),
+            inverseJoinColumns = @JoinColumn(name = "libro_id")
+    )
+    private List<Libro> libros = new ArrayList<Libro>();
 }

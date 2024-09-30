@@ -25,16 +25,16 @@ public class Inicial1Application {
 
 	@Bean
 	@Transactional
-	CommandLineRunner init(PersonaRepository personaRepository, DomicilioRepository domicilioRepository, LocalidadRepository localidadRepository) {
+	CommandLineRunner init(PersonaRepository personaRepository) {
 		return args -> {
 
-
+		/*
 			// Creo un objeto persona
 			Persona persona1 = Persona.builder().
 					nombre("Martina").apellido("Nuñez").dni(45602188).
 					build();
 
-			personaRepository.save(persona1);
+			personaRepository.save(persona1);*/
 
 
 		};

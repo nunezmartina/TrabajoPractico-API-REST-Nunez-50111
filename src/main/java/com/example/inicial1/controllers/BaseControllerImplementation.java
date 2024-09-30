@@ -1,39 +1,46 @@
 package com.example.inicial1.controllers;
 
-
-import com.example.inicial1.entities.Domicilio;
-import com.example.inicial1.services.DomicilioService;
+import com.example.inicial1.entities.Base;
+import com.example.inicial1.services.BaseServiceImplementation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@CrossOrigin(origins ="*")
-@RequestMapping(path="api/v1/domicilio")
-public class DomicilioController {
-    private DomicilioService domicilioService;
+//CONTROLADOR GENERICO
 
-    public DomicilioController(DomicilioService domicilioService){
-        this.domicilioService= domicilioService;
-    }
+public abstract class BaseControllerImplementation<E extends Base, S extends BaseServiceImplementation<E, Long>> implements BaseController<E, Long> {
+
+    @Autowired
+    protected S servicio;
 
     @GetMapping("")
     public ResponseEntity<?> getAll(){
         try{
             return ResponseEntity.status(HttpStatus.OK).
-                    body(domicilioService.findAll());
+                    body(servicio.findAll());
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente más tarde\"}");
         }
     }
 
-
+    @GetMapping("/paged")
+    public ResponseEntity<?> getAll(Pageable pageable){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).
+                    body(servicio.findAll(pageable));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente más tarde\"}");
+        }
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getOne(@PathVariable Long id){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(domicilioService.findById(id));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.findById(id));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"error\":\"Error, por favor intente más tarde\"}");
@@ -41,10 +48,9 @@ public class DomicilioController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> save(@RequestBody Domicilio entity){
-
+    public ResponseEntity<?> save(@RequestBody E entity){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(domicilioService.save(entity));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.save(entity));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente más tarde\"}");
@@ -52,9 +58,9 @@ public class DomicilioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Domicilio entity){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody E entity){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(domicilioService.update(id, entity));
+            return ResponseEntity.status(HttpStatus.OK).body(servicio.save(entity));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente más tarde\"}");
@@ -64,7 +70,7 @@ public class DomicilioController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         try{
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(domicilioService.delete(id));
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(servicio.delete(id));
         }
         catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error, por favor intente más tarde\"}");
